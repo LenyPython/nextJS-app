@@ -13,7 +13,10 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
         <div className='main'>
           <div className='gradient'></div>
         </div>
-        <main className='app'>{children}</main>
+        <main className='app'>
+          <Nav />
+          {children}
+        </main>
       </body>
     </html>
   )
