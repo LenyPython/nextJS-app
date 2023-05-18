@@ -2,10 +2,32 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
-import { signIn, signOut, useSession, getProviders } from 'next-auth/react'
+import {
+  signIn,
+  signOut,
+  useSession,
+  getProviders,
+  LiteralUnion,
+  ClientSafeProvider
+} from 'next-auth/react'
+import { BuiltInProviderType } from 'next-auth/providers'
+import SignIn from '@/components/SignIn'
 
+export type ProvidersType = Record<
+  LiteralUnion<BuiltInProviderType, string>,
+  ClientSafeProvider
+>
 const Nav = () => {
   const isUserLoggedIn = true
+  const [providers, setProviders] = useState<ProvidersType | null>(null)
+  useEffect(() => {
+    const fetchProviders = async () => {
+      const response = await getProviders()
+      setProviders(response)
+    }
+    fetchProviders()
+  }, [])
+  const signOut = () => {}
   return (
     <nav className='w-full flex-column flex-between mb-16'>
       <Link href='/' className='gap-2 flex-center'>
@@ -24,9 +46,37 @@ const Nav = () => {
             <Link href='/create-prompt' className='black_btn'>
               Create Prompt
             </Link>
+            <button type='button' onClick={signOut} className='outline_btn'>
+              Sign Out
+            </button>
+            <Link href='/profile'>
+              <Image
+                src='/assets/images/logo.svg'
+                width={37}
+                height={37}
+                className='rounded-full'
+                alt='profile-pic'
+              />
+            </Link>
           </div>
         ) : (
-          <></>
+          <SignIn providers={providers} />
+        )}
+      </div>
+      <div className='sm:hidden flex relative'>
+        {isUserLoggedIn ? (
+          <div className='flex'>
+            <Image
+              src='/assets/images/logo.svg'
+              width={37}
+              height={37}
+              className='rounded-full'
+              alt='profile-pic'
+              onClick={() => {}}
+            />
+          </div>
+        ) : (
+          <SignIn providers={providers} />
         )}
       </div>
     </nav>
