@@ -1,7 +1,14 @@
-import React from 'react'
+'use client'
+import { Session } from 'next-auth'
+import { SessionProvider } from 'next-auth/react'
+import { FC, PropsWithChildren } from 'react'
 
-const Provider = () => {
-  return <div>Provider</div>
+type Props = {
+  session: Session
+}
+
+const Provider: FC<PropsWithChildren<Props>> = ({ children, session }) => {
+  return <SessionProvider session={session}>{children}</SessionProvider>
 }
 
 export default Provider
