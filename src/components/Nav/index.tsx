@@ -20,6 +20,7 @@ export type ProvidersType = Record<
 const Nav = () => {
   const isUserLoggedIn = true
   const [providers, setProviders] = useState<ProvidersType | null>(null)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   useEffect(() => {
     const fetchProviders = async () => {
       const response = await getProviders()
@@ -72,8 +73,36 @@ const Nav = () => {
               height={37}
               className='rounded-full'
               alt='profile-pic'
-              onClick={() => {}}
+              onClick={() => setIsDropdownOpen(prev => !prev)}
             />
+            {isDropdownOpen && (
+              <div className='dropdown'>
+                <Link
+                  href='/profile'
+                  className='dropdown_link'
+                  onClick={() => setIsDropdownOpen(false)}
+                >
+                  My Profile
+                </Link>
+                <Link
+                  href='/create-prompt'
+                  className='dropdown_link'
+                  onClick={() => setIsDropdownOpen(false)}
+                >
+                  Create Prompt
+                </Link>
+                <button
+                  type='button'
+                  className='mt-5 w-full black_btn'
+                  onClick={() => {
+                    setIsDropdownOpen(false)
+                    signOut()
+                  }}
+                >
+                  Sign Out
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <SignIn providers={providers} />
