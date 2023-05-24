@@ -1,6 +1,7 @@
 import '@/styles/globals.css'
 import Nav from '@/components/Nav'
 import { FC, PropsWithChildren } from 'react'
+import Provider from '@/components/Provider'
 
 export const metadata = {
   title: 'Training with Next',
@@ -13,10 +14,12 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
         <div className='main'>
           <div className='gradient'></div>
         </div>
-        <main className='app'>
-          <Nav />
-          {children}
-        </main>
+        <Provider>
+          <main className='app'>
+            <Nav />
+            {children}
+          </main>
+        </Provider>
       </body>
     </html>
   )
