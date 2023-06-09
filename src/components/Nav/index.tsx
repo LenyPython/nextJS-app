@@ -3,7 +3,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import {
-  signIn,
   signOut,
   useSession,
   getProviders,
@@ -18,7 +17,7 @@ export type ProvidersType = Record<
   ClientSafeProvider
 >
 const Nav = () => {
-  const isUserLoggedIn = true
+  const { data: session } = useSession()
   const [providers, setProviders] = useState<ProvidersType | null>(null)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   useEffect(() => {
@@ -42,12 +41,16 @@ const Nav = () => {
         <p className='logo_text'>App logo Text</p>
       </Link>
       <div className='sm:flex hidden'>
-        {isUserLoggedIn ? (
+        {session?.user ? (
           <div className='flex gap-3 md:gap-5'>
             <Link href='/create-prompt' className='black_btn'>
               Create Prompt
             </Link>
-            <button type='button' onClick={signOut} className='outline_btn'>
+            <button
+              type='button'
+              onClick={() => signOut()}
+              className='outline_btn'
+            >
               Sign Out
             </button>
             <Link href='/profile'>
@@ -65,7 +68,7 @@ const Nav = () => {
         )}
       </div>
       <div className='sm:hidden flex relative'>
-        {isUserLoggedIn ? (
+        {session?.user ? (
           <div className='flex'>
             <Image
               src='/assets/images/logo.svg'

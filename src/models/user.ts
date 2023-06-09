@@ -6,7 +6,7 @@ const UserSchema = new Schema({
     unique: [true, 'Email already exists!'],
     required: [true, 'Email is required!']
   },
-  username: {
+  name: {
     type: String,
     required: [true, 'Username is required!'],
     match: [/^([a-zA-Z0-9]){8,15}$/, 'Username should be 8-15 characters long']
