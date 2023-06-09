@@ -1,3 +1,4 @@
+import { connectToDB } from '@/utils/db'
 import NextAuth from 'next-auth/next'
 import GoogleProvider from 'next-auth/providers/google'
 import { signIn } from 'next-auth/react'
@@ -12,7 +13,13 @@ const handler = NextAuth({
   async session({ session }) {},
   async signIn({ user, account, profile }) {
     try {
-    } catch (e) {}
+      await connectToDB()
+
+      return true
+    } catch (e) {
+      console.log(e)
+      return false
+    }
   }
 })
 
