@@ -1,9 +1,8 @@
 import User from '@/models/user'
 import { connectToDB } from '@/utils/db'
-import { Profile, Session } from 'next-auth/core/types'
+import { Session } from 'next-auth/core/types'
 import NextAuth from 'next-auth/next'
 import GoogleProvider from 'next-auth/providers/google'
-import { signIn } from 'next-auth/react'
 
 const handler = NextAuth({
   providers: [
@@ -26,7 +25,8 @@ const handler = NextAuth({
       session.user.id = sessionUser._id.toString()
       return session
     },
-    async signIn({ profile }: { profile?: Profile }) {
+    //@ts-ignore
+    async signIn({ profile }) {
       if (!profile) {
         console.warn('No user')
         return
@@ -43,7 +43,6 @@ const handler = NextAuth({
             image: profile.image
           })
         }
-
         return true
       } catch (e) {
         console.log(e)
