@@ -2,7 +2,7 @@ import User from '@/models/user'
 import { connectToDB } from '@/utils/db'
 import { Session } from 'next-auth/core/types'
 import NextAuth from 'next-auth/next'
-import GoogleProvider from 'next-auth/providers/google'
+import GoogleProvider, { GoogleProfile } from 'next-auth/providers/google'
 
 const handler = NextAuth({
   providers: [
@@ -26,7 +26,7 @@ const handler = NextAuth({
       return session
     },
     //@ts-ignore
-    async signIn({ profile }) {
+    async signIn({ profile }: { profile: GoogleProfile }) {
       if (!profile) {
         console.warn('No user')
         return
@@ -40,7 +40,7 @@ const handler = NextAuth({
           await User.create({
             email: profile.email,
             username: profile.name,
-            image: profile.image
+            image: profile.picture
           })
         }
         return true
