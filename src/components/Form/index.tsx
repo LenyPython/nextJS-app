@@ -1,4 +1,5 @@
 import { Post } from '@/app/create-prompt/page'
+import Link from 'next/link'
 import { FC } from 'react'
 
 type Props = {
@@ -39,15 +40,27 @@ const Form: FC<Props> = ({ type, post, setPost, submitting, handleSubmit }) => {
             Tag
           </span>
           <span className='font-normal'> (#product, #webdev, #idea)</span>
-          <textarea
+          <input
             name='post'
             value={post.tag}
             onChange={e => setPost({ ...post, tag: e.target.value })}
-            placeholder='Tag your prompt here...'
+            placeholder='Tag ...'
             required
-            className='form_textarea'
+            className='form_input'
           />
         </label>
+        <div className='flex-end mx-3 mb-5 gap-4'>
+          <Link href='/' className='text-gray-500 text-sm'>
+            Cancel
+          </Link>
+          <button
+            type='submit'
+            disabled={submitting}
+            className='px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white'
+          >
+            {submitting ? `${type}...` : `${type}`}
+          </button>
+        </div>
       </form>
     </section>
   )
